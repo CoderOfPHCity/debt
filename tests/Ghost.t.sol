@@ -64,7 +64,7 @@ contract VariableDebtTokenTest is Test {
       uint debtpayerbeforeTransfer = Iproxy(proxyaddress).balanceOf(debtPayer);
       console.log('Debtpayer before transfer', debtpayerbeforeTransfer);
 
-      Iproxy(proxyaddress).approve(debtPayer, 11743700162 );
+      Iproxy(proxyaddress).approve(debtPayer, 62 );
       uint allowancBal = Iproxy(proxyaddress).getAllowance(borrower, debtPayer);
       console.log('allowance is ',allowancBal );
 

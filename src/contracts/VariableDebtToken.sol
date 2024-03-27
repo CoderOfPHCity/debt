@@ -221,9 +221,10 @@ import {IERC20Errors} from 'lib/openzeppelin-contracts/contracts/interfaces/draf
          require(spender == to, "Only recipient can transfer debt");
      require(_allowedTransfers[from][msg.sender] >= value, "insuddicient allowance");
         _transfer(from, to, value);
-        _allowedTransfers[spender][from] -= uint128(value);
+        _allowedTransfers[from][to] -= uint128(value);
+        console.log('transfer has ended');
         return true;
-      console.log('transfer has ended');
+      
     }
 
   function increaseAllowance(address, uint256) external virtual override returns (bool) {
