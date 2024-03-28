@@ -69,21 +69,3 @@ Gas prices: Implementing these functions may result in higher gas prices for use
 * Implement role-based access control to restrict sensitive functions.
 * Use secure coding practices to prevent vulnerabilities like reentrancy and integer overflow/underflow.
 * Regularly audit the contract code for potential security issues.
-# Deployment to Aave V3 Ethereum
-
-Deploy the updated Variable Debt Token contract on the Ethereum network in order for the state to be changed and for it to be successfully deployed.
-
-Aave V3 Ethereum protocol interfaces and contracts should be updated to acknowledge the Variable Debt Token as a supported asset. This could entail making changes to the LendingPool, Pool, and other relevant contracts.
-
-**Set up Aave Protocol-** Set up the Aave protocol to handle the Variable Debt Token. This involves adjusting risk factors, liquidity incentives, and interest rate models as needed.
-
-**Testing-** To guarantee correct operation and compatibility with the Aave protocol, thoroughly test the integration on a testnet environment.
-
-**Security Audit-** To find and fix any possible weaknesses or security threats, carry out a thorough security audit of the integrated system.
-
-An overview below ;
-* Deploy the modified Variable Debt Token contract to the Ethereum network.
-* Integrate the contract with Aave V3 Ethereum by updating the respective interfaces and contracts.
-* Configure the Aave protocol to recognize the Variable Debt Token as a supported asset.
-* Test the integration thoroughly on a testnet before deploying to the mainnet.
-
