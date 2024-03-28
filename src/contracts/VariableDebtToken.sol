@@ -156,10 +156,7 @@ import {IERC20Errors} from 'lib/openzeppelin-contracts/contracts/interfaces/draf
     /**
    * @dev Implements ERC20 transfer functionality
    */
-  function transfer(address recipient, uint256 amount) external virtual override returns (bool) {
-    _transfer(msg.sender, recipient, amount);
-    return true;
-  }
+  
 
       /**
      * @dev ERC20 allowance functionality
@@ -189,7 +186,6 @@ import {IERC20Errors} from 'lib/openzeppelin-contracts/contracts/interfaces/draf
         _totalSupply += value;
      } else {
         uint128 fromBalance = _userState[from].balance;
-        console.log('from balance', fromBalance);
         if (fromBalance < value) {
             revert ERC20InsufficientBalance(from, fromBalance, value);
         }
@@ -207,13 +203,10 @@ import {IERC20Errors} from 'lib/openzeppelin-contracts/contracts/interfaces/draf
         unchecked {
           
           uint128 tobal = _userState[to].balance += uint128(value);
-            console.log('to balance', tobal);
-
         }
     }
     
     emit Transfer(from, to, value);
-    console.log('transfer has ended');
 }
 
     function transferFrom(address from, address to, uint256 value) public virtual override returns (bool) {
@@ -222,7 +215,6 @@ import {IERC20Errors} from 'lib/openzeppelin-contracts/contracts/interfaces/draf
      require(_allowedTransfers[from][msg.sender] >= value, "insuddicient allowance");
         _transfer(from, to, value);
         _allowedTransfers[from][to] -= uint128(value);
-        console.log('transfer has ended');
         return true;
       
     }
@@ -238,5 +230,8 @@ import {IERC20Errors} from 'lib/openzeppelin-contracts/contracts/interfaces/draf
   /// @inheritdoc IVariableDebtToken
   function UNDERLYING_ASSET_ADDRESS() external view override returns (address) {
     return _underlyingAsset;
+  }
+  function transfer(address recipient, uint256 amount) external virtual override returns (bool) {
+   revert(Errors.OPERATION_NOT_SUPPORTED);
   }
 }

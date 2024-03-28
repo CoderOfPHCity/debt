@@ -17,6 +17,13 @@ interface Iproxy {
   function transfer(address recipient, uint256 amount) external returns (bool);
   function getAllowance(address borrower, address user) external view returns(uint);
   function allowance(address owner, address spender) external view returns (uint256);
+
+    function repay(
+    address asset,
+    uint256 amount,
+    uint256 interestRateMode,
+    address onBehalfOf
+  ) external returns (uint256);
 }
 
 contract VariableDebtTokenTest is Test {
@@ -24,7 +31,7 @@ contract VariableDebtTokenTest is Test {
 
   VariableDebtToken variableDebtToken_;
    address borrower = 0x1e38f19EC613cFCb06D23fd71d01C9dC1fEba45e;
-   address debtPayer = 0xC95086539f40aE4c658D64c5d159bac00DA24FE8;
+   address debtPayer = 0xAe2D4617c862309A3d75A0fFB358c7a5009c673F;
    
   //  address Tenant = mkaddr("Tenant");
   // address Estate = mkaddr("Estate");
@@ -60,38 +67,33 @@ contract VariableDebtTokenTest is Test {
       vm.startPrank(borrower);
       IPool(main).borrow(0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48, 600000000, 2, 0, 	0x1e38f19EC613cFCb06D23fd71d01C9dC1fEba45e);
       
-      // uint debtbeforeTransfer = Iproxy(proxyaddress).balanceOf(borrower);
-      // console.log('Debt before transfer', debtbeforeTransfer);
+      uint debtbeforeTransfer = Iproxy(proxyaddress).balanceOf(borrower);
+      console.log('varibleDebt token of borrower before transfer', debtbeforeTransfer);
 
-      // uint debtpayerbeforeTransfer = Iproxy(proxyaddress).balanceOf(debtPayer);
-      // console.log('Debtpayer before transfer', debtpayerbeforeTransfer);
+      uint debtpayerbeforeTransfer = Iproxy(proxyaddress).balanceOf(debtPayer);
+      console.log('varibleDebt token of debtpayer before transfer', debtpayerbeforeTransfer);
 
-      // Iproxy(proxyaddress).approve(debtPayer, 11743700162 );
-      // uint allowancBal = Iproxy(proxyaddress).getAllowance(borrower, debtPayer);
-      // console.log('allowance is ',allowancBal );
-
-      // vm.stopPrank();
-      
-      // vm.startPrank(debtPayer);
-      // Iproxy(proxyaddress).transferFrom(borrower, debtPayer, 11743700162);
-
-      // vm.stopPrank();
-      // vm.startPrank(debtPayer);
-      // uint debtafterTransfer = Iproxy(proxyaddress).balanceOf(borrower);
-      // console.log('Debt after transfer', debtafterTransfer);
-
-      // uint debtpayerafterTransfer = Iproxy(proxyaddress).balanceOf(debtPayer);
-      // console.log('Debtpayer after transfer', debtpayerafterTransfer);
-      // vm.stopPrank();
-    
-
-      // uint firstallowance = Iproxy(0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48).allowance(debtPayer, 0x98C23E9d8f34FEFb1B7BD6a91B7FF122F4e16F5c);
-      // console.log('first allowance',firstallowance);
-      
-      //todo get the supply to work.
-      IPool(main).supply(underlyingAsset, 100, borrower, 0);
+      Iproxy(proxyaddress).approve(debtPayer, 11743700162 );
       vm.stopPrank();
       
+      vm.startPrank(debtPayer);
+      Iproxy(proxyaddress).transferFrom(borrower, debtPayer, 11743700162);
+
+      vm.stopPrank();
+      
+      vm.startPrank(debtPayer);
+      uint debtafterTransfer = Iproxy(proxyaddress).balanceOf(borrower);
+      console.log('variable Debt token of borrower after transfer', debtafterTransfer);
+
+      uint debtpayerafterTransfer = Iproxy(proxyaddress).balanceOf(debtPayer);
+      console.log('variable debt token of debt payer after transfer', debtpayerafterTransfer);
+      vm.stopPrank();    
+      
+      vm.startPrank(debtPayer);
+      Iproxy(0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48).approve(main, 11743700162000000000000000000000000000000 );
+      IPool(main).repay(0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48, 600000000, 2, debtPayer);
+      vm.stopPrank();
+      console.log('debt repayment successful');
       }
 
       function mkaddr(string memory name) public returns (address) {
