@@ -16,14 +16,6 @@ interface Iproxy {
   function transferFrom(address from, address to, uint256 value) external returns (bool);
   function transfer(address recipient, uint256 amount) external returns (bool);
   function getAllowance(address borrower, address user) external view returns(uint);
-  function allowance(address owner, address spender) external view returns (uint256);
-
-    function repay(
-    address asset,
-    uint256 amount,
-    uint256 interestRateMode,
-    address onBehalfOf
-  ) external returns (uint256);
 }
 
 contract VariableDebtTokenTest is Test {
@@ -38,7 +30,6 @@ contract VariableDebtTokenTest is Test {
 
     address main =0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2;
     address underlyingAsset = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
-    address fiattokenv2 = 0x43506849D7C04F9138D1A2050bbF3A0c054402dd;
     address incentivesController = 0x8164Cc65827dcFe994AB23944CBC90e0aa80bFcb;
     uint8 debtTokenDecimals = 6;
     string debtTokenName = 'USDCMOCK';
@@ -80,6 +71,12 @@ contract VariableDebtTokenTest is Test {
       Iproxy(proxyaddress).transferFrom(borrower, debtPayer, 11743700162);
 
       vm.stopPrank();
+      vm.startPrank(debtPayer);
+      uint debtafterTransfer = Iproxy(proxyaddress).balanceOf(borrower);
+      console.log('Debt after transfer', debtafterTransfer);
+
+        uint debtpayerafterTransfer = Iproxy(proxyaddress).balanceOf(debtPayer);
+      console.log('Debtpayer before transfer', debtpayerafterTransfer);
       
       vm.startPrank(debtPayer);
       uint debtafterTransfer = Iproxy(proxyaddress).balanceOf(borrower);
@@ -105,7 +102,3 @@ contract VariableDebtTokenTest is Test {
     }
 
 }
-
-
-
-
