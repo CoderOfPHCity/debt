@@ -1,3 +1,4 @@
+## Introduction
 Accurate liability representation is a critical consideration while transferring the codebase. 
 
 As the Variable Debt Token is a representation of the borrowers' liabilities, its transferability may result in unapproved debt rises.
